@@ -1,12 +1,11 @@
-const mysql = require('mysql');
+var mysql = require('mysql');
 
-// MySQL 연결 설정
-const connection = mysql.createConnection({
+var connection = mysql.createConnection({
     connectionLimit: 5,
     host: 'localhost',
     user: 'root',
     password: 'MySQLpass',
-    database: 'db_market'
+    database: 'db_market',
 });
 
 // 게시물 검색 함수
