@@ -99,6 +99,23 @@ export default {
       maxPhotos: 3,
     };
   },
+  computed: {
+    isFormValid() {
+      const isLocationValid = this.Deal_way === 0 ? !!this.location : true;
+
+      return (
+        !!this.title &&
+        !!this.price &&
+        !!this.description &&
+        this.Deal_way !== null &&
+        isLocationValid &&
+        !!this.tags &&
+        !!this.mainCategory &&
+        !!this.subCategory &&
+        this.photos.length > 0 // 배열이 비어있지 않은지 확인
+      );
+    },
+  },
   methods: {
     handleFileUpload(event) {
       const files = Array.from(event.target.files);
@@ -125,6 +142,10 @@ export default {
       this.previews.splice(index, 1);
     },
     submitForm() {
+      if (!this.isFormValid) {
+        alert("모든 필드를 입력해주세요.");
+        return;
+      }
       const token = localStorage.getItem('token');
       const user = jwtDecode(token);
 
@@ -149,6 +170,8 @@ export default {
         .then(() => {
           alert('등록 성공!');
           this.resetForm();
+          // 등록 성공 후 상품 검색 페이지로 리다이렉트
+          this.$router.push({ name: 'search' });
         })
         .catch(error => {
           alert('등록 실패. 다시 시도해주세요.');

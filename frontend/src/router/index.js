@@ -16,6 +16,34 @@ const routes = [
     component: () => import('../pages/mypage/UserPage/MyPage.vue')
   },
   {
+    path: '/mypage/edit',
+    name: 'mypageedit',
+    component: () => import('../pages/mypage/UserPage/MyPageEdit.vue')
+  },
+  {
+    path: '/mypage/sale',
+    redirect: '/mypage/sale/page_1', // 기본 경로를 page_1로 설정
+  },
+  {
+    path: '/mypage/sale/page_:page',
+    name: 'mysale',
+    component: () => import('../pages/mypage/UserPage/MyPageSale.vue')
+  },
+  {
+    path: '/mypage/purchase',
+    redirect: '/mypage/purchase/page_1', // 기본 경로를 page_1로 설정
+  },
+  {
+    path: '/mypage/purchase/page_:page',
+    name: 'mypurchase',
+    component: () => import('../pages/mypage/UserPage/MyPagePurchase.vue')
+  },
+  {
+    path: '/mypage/likelist',
+    name: 'mylike',
+    component: () => import('../pages/mypage/UserPage/MyPageEdit.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('../pages/login/LoginPage.vue')
@@ -24,13 +52,33 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: () => import('../pages/signup/SignUPPage.vue')
-
   },
   {
     path: '/search',
     name: 'search',
     component: () => import('../pages/search/SearchPage.vue'),
     meta: { requiresAuth: true } // 인증이 필요한 페이지
+  },
+  {
+    path: '/read/:ino',
+    name: 'read',
+    component: () => import('../pages/search/ReadPage.vue'),
+    meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    props: true
+  },
+  {
+    path: '/request/:ino',
+    name: 'request',
+    component: () => import('../pages/search/RequestPage.vue'),
+    meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    props: true
+  },
+  {
+    path: '/update/:ino',
+    name: 'update',
+    component: () => import('../pages/search/UpdatePage.vue'),
+    meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    props: true
   },
   {
     path: '/regist',
