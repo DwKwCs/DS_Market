@@ -24,23 +24,23 @@
                 </section>
 
                 <section class="my-products">
-                    <h2>내가 판매한 상품</h2>
+                    <h2>내가 찜한 상품</h2>
 					<!-- Table for posts -->
 					<table class="item-table">
 						<thead>
-						<tr>
-							<th class="image-column">사진</th>
-							<th class="title-column">제목</th>
-							<th class="price-column">가격</th>
-							<th class="date-column">작성일</th>
-						</tr>
+							<tr>
+								<th class="image-column">사진</th>
+								<th class="title-column">제목</th>
+								<th class="price-column">가격</th>
+								<th class="date-column">작성일</th>
+							</tr>
 						</thead>
 						<tbody>
 							<tr v-if="!items">
 								<td class="item-image">
 									<img src="https://i.namu.wiki/i/88Te46HNfgOSkt09UwDFqKXvmL2K80dInPzMhlgtvya6_l_H2NkdBxBiY_-1efoVmSADAH9v5oiR0B4jVMGwMw.webp" alt="Example Image">
 								</td>
-								<td class="item-title">구매상품이</td>
+								<td class="item-title">찜상품이</td>
 								<td class="item-price">존재하지</td>
 								<td class="post-time">않습니다</td>
 							</tr>
@@ -109,7 +109,31 @@ export default {
 	},
   
 	mounted() {
-		this.fetchPosts();
+		// Axios GET 요청
+		const token = localStorage.getItem('token'); // 토큰을 로컬 스토리지에서 가져오기
+
+		axios.get('http://localhost:3000/mypage/like', {
+			headers: {
+				Authorization: `Bearer ${token}` // 인증 헤더 설정
+			}
+		})
+		.then(response => {
+			this.items = response.data.items; // 응답 데이터에서 사용자 정보 저장
+			console.log('items: '+ JSON.stringify(this.items));
+		})
+		.catch(err => {
+			console.error('Error fetching MyPage data:', err);
+			if(err.response.data.message === 'Item not exists')
+				this.error = null;
+			else if (err.response && err.response.data) {
+				this.error = err.response.data.message || 'Failed to load data';
+			} else {
+				this.error = 'An unexpected error occurred';
+			}
+		})
+		.finally(() => {
+			this.loading = false; // 로딩 상태 종료
+		});
 	},
 
 	computed: {
@@ -135,34 +159,6 @@ export default {
 	},
 
 	methods:{
-		fetchPosts() {
-			// Axios GET 요청
-			const token = localStorage.getItem('token'); // 토큰을 로컬 스토리지에서 가져오기
-
-			axios.get('http://localhost:3000/mypage/sale', {
-				headers: {
-					Authorization: `Bearer ${token}` // 인증 헤더 설정
-				}
-			})
-			.then(response => {
-				this.items = response.data.items; // 응답 데이터에서 사용자 정보 저장
-				console.log('items: '+ JSON.stringify(this.items));
-			})
-			.catch(err => {
-				console.error('Error fetching MyPage data:', err);
-				if(err.response.data.message === 'Item not exists')
-					this.error = null;
-				else if (err.response && err.response.data) {
-					this.error = err.response.data.message || 'Failed to load data';
-				} else {
-					this.error = 'An unexpected error occurred';
-				}
-			})
-			.finally(() => {
-				this.loading = false; // 로딩 상태 종료
-			});
-		},
-
 		formatDate(dateString) {
 			if (!dateString) return "N/A";
 			const date = new Date(dateString);
@@ -176,7 +172,7 @@ export default {
 		nextPage() {
 			if (this.currentPage < this.totalPages) {
 				this.$router.push({
-					name: "mysale",
+					name: "mylike",
 					params: { page: this.currentPage + 1 },
 				});
 			}
@@ -184,7 +180,7 @@ export default {
 		prevPage() {
 			if (this.currentPage > 1) {
 				this.$router.push({
-					name: "mysale",
+					name: "mylike",
 					params: { page: this.currentPage - 1 },
 				});
 			}
@@ -195,10 +191,7 @@ export default {
 				params: { ino: item.Ino }
 			});
 		},
-	},
-	created() {
-		this.fetchPosts();
-	},
+	}
 };
 </script>
 

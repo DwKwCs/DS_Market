@@ -27,6 +27,7 @@ const routes = [
   {
     path: '/mypage/sale/page_:page',
     name: 'mysale',
+	props: true,
     component: () => import('../pages/mypage/UserPage/MyPageSale.vue')
   },
   {
@@ -36,12 +37,23 @@ const routes = [
   {
     path: '/mypage/purchase/page_:page',
     name: 'mypurchase',
+	props: true,
     component: () => import('../pages/mypage/UserPage/MyPagePurchase.vue')
   },
   {
-    path: '/mypage/likelist',
+    path: '/mypage/like',
+    redirect: '/mypage/like/page_1', // 기본 경로를 page_1로 설정
+  },
+  {
+    path: '/mypage/like/page_:page',
     name: 'mylike',
-    component: () => import('../pages/mypage/UserPage/MyPageEdit.vue')
+	props: true,
+    component: () => import('../pages/mypage/UserPage/MyPageLike.vue')
+  },
+  {
+    path: '/mypage/manage',
+    name: 'manage',
+    component: () => import('../pages/mypage/AdminPage/AdminPage.vue')
   },
   {
     path: '/login',
@@ -52,6 +64,16 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: () => import('../pages/signup/SignUPPage.vue')
+  },
+  {
+    path: '/account/id',
+    name: 'findID',
+    component: () => import('../pages/login/account/FindidPage.vue')
+  },
+  {
+    path: '/account/password',
+    name: 'findPW',
+    component: () => import('../pages/login/account/FindpwPage.vue')
   },
   {
     path: '/search',

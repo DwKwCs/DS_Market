@@ -7,10 +7,10 @@
             <!-- 마이페이지 메뉴 -->
             <aside class="sidebar">
                 <ul>
-                    <li @click="$router.push('/mypage/edit')">나의 정보 보기</li>
+                    <li @click="$router.push('/mypage')">나의 정보 보기</li>
                     <li @click="$router.push('/mypage/sale')">나의 판매 내역</li>
                     <li @click="$router.push('/mypage/purchase')">나의 구매 내역</li>
-                    <li @click="$router.push('/mypage/likelist')">내가 찜한 상품</li>
+                    <li @click="$router.push('/mypage/like')">내가 찜한 상품</li>
                 </ul>
             </aside>
 
@@ -48,6 +48,7 @@
 								v-for="(item, index) in paginatedPosts"
 								:key="index"
 								:class="{ notice: item.B_uid !== null }"
+								@click.prevent="goToViewPost(item)"
 							>
 								<td class="item-image">
 									<img 
@@ -56,7 +57,7 @@
 									/>
 								</td>
 								<td class="item-title">
-									<a href="#" @click.prevent="goToViewPost(item)">
+									<a href="#">
 										{{ item.Title }}
 									</a>
 								</td>
@@ -99,7 +100,7 @@ export default {
 		return {
 			// 사용자 데이터 저장
 			items: [],
-			itemsPerPage: 10, // 페이지당 항목 수
+			itemsPerPage: 5, // 페이지당 항목 수
 
 			loading: true,      // 로딩 상태
 			error: null         // 에러 메시지

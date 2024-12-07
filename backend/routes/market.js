@@ -9,6 +9,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 var signupController = require('../controllers/signupController');
 var loginController = require('../controllers/loginController');
 
+//  아이디, 비밀번호 찾기 컨트롤러
+var accountController = require('../controllers/accountController');
+
 //  마이페이지 컨트롤러
 var mypageController = require('../controllers/mypageController');
 
@@ -40,11 +43,28 @@ var deletepostController = require("../controllers/deletepostController");
 router.post('/signup', signupController.insertUser);
 router.post('/login', loginController.loginUser);
 
+//  아이디, 비밀번호 찾기
+router.post('/account/id', accountController.findID);
+router.post('/account/password', accountController.findPW);
+
 //  마이페이지
 router.get('/mypage', mypageController.getUserInformation);
+//	마이페이지 수정
 router.post('/mypage', upload.single("Profile_image"), mypageController.modifyUserInformation);
+//	판매목록
 router.get('/mypage/sale', mypageController.getSaleItems);
+//	구매목록
 router.get('/mypage/purchase', mypageController.getPurchaseItems);
+//	찜목록
+router.get('/mypage/like', mypageController.getLikeItems);
+//	관리자페이지
+router.get('/mypage/manage', mypageController.getRpUserList);
+//	신고당한 유저 정보 가져오기
+router.get('/mypage/manage/detail', mypageController.getRpUser);
+//	신고당한 유저 글 가져오기
+router.get('/mypage/manage/list', mypageController.getRpList);
+//	신고당한 유저 밴하기
+router.delete('/mypage/manage/ban', mypageController.banUser);
 
 //  지도 API - 회원 주변의 상품 검색
 router.post('/map', mapController.getUserLocation);
